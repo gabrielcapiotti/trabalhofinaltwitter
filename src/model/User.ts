@@ -26,7 +26,7 @@ export default class User {
     }
 
     follow(user: User) {
-        if (user === this) { // Verifica se o usuário não está tentando seguir ele mesmo
+        if (user === this) { // Verifica se usuário não está tentando seguir ele mesmo
             throw new Error("You cannot follow yourself."); // Lança uma exceção informando que não é possível seguir a si mesmo
         }
 
@@ -43,24 +43,24 @@ export default class User {
     unfollow(user: User) {
         const index = this.following.indexOf(user); // Encontra o índice do usuário na lista de quem está seguindo
 
-        if (index !== -1) { // Verifica se o usuário está na lista de quem está seguindo
+        if (index !== -1) { // Verifica se usuário está na lista de quem está seguindo
             this.following.splice(index, 1); // Remove o usuário da lista de quem está seguindo
-            console.log(`${this.username} has unfollowed ${user.username}`); // Mensagem indicando que o usuário deixou de seguir outro
+            console.log(`${this.username} has unfollowed ${user.username}`); // indica que usuário deixou de seguir outro
         } else {
-            console.log(`${this.username} does not follow ${user.username}`); // Mensagem indicando que o usuário não estava seguindo o outro
+            console.log(`${this.username} does not follow ${user.username}`); // indica que usuário não está seguindo o outro
         }
     }
 
     addTweet(tweet: Tweet) {
-        this.tweets.push(tweet); // Adiciona o tweet à lista de tweets do usuário
+        this.tweets.push(tweet); // Adiciona tweet à lista de tweets do usuário
     }
 
     likeTweet(tweet: Tweet) {
-        tweet.like(); // Chama o método like do tweet
+        tweet.like(); // Chama método like do tweet
     }
     
     replyTweet(tweet: Tweet, content: string) {
-        const reply = new Tweet(this, content, TweetType.Reply); // Cria um novo tweet do tipo "reply"
+        const reply = new Tweet(this, content, TweetType.Reply); // Cria novo tweet do tipo "reply"
         tweet.addReply(content); // Adiciona a resposta à lista de respostas do tweet original
     }    
     
