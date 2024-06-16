@@ -1,5 +1,5 @@
-import  User  from "./User"; 
-import  TweetType  from "../types/TweetType"; 
+import User from "./User"; 
+import {TweetType} from "../types/TweetType"; 
 
 export default class Tweet {
     private static idCounter: number = 1;
@@ -29,10 +29,9 @@ export default class Tweet {
         console.log(`${this.author.username}'s tweet liked. Total likes: ${this.likes}`);
     }
 
-    addReply(content: string) {
-        const reply = new Tweet(this.author, content, TweetType.Reply);
+    addReply(reply: Tweet) {
         this.replies.push(reply);
-        console.log(`Reply added to ${this.author.username}'s tweet: "${content}"`);
+        console.log(`Reply added to ${this.author.username}'s tweet: "${reply.content}"`);
     }
 
     getId(): number {
@@ -40,22 +39,21 @@ export default class Tweet {
     }
 }
 
-
 export class TweetService {
-    private static tweets: Tweet[] = []; // Lista de tweets
+    private static tweets: Tweet[] = [];
 
     static createTweet(author: User, content: string, type: TweetType = TweetType.Normal) {
-        const newTweet = new Tweet(author, content, type); // Cria um novo tweet
-        TweetService.tweets.push(newTweet); // Adiciona o tweet à lista de tweets
-        console.log(`${author.username} tweeted: "${content}"`); // Mensagem indicando que o tweet foi criado com sucesso
+        const newTweet = new Tweet(author, content, type);
+        TweetService.tweets.push(newTweet);
+        console.log(`${author.username} tweeted: "${content}"`);
     }
 
     static getTweets(): Tweet[] {
-        return TweetService.tweets; // Retorna a lista de tweets
+        return TweetService.tweets;
     }
 
     static getTweetById(id: number): Tweet | undefined {
-        return TweetService.tweets.find(tweet => tweet.getId() === id); // Retorna o tweet com o ID especificado, se encontrado
+        return TweetService.tweets.find(tweet => tweet.getId() === id);
     }
 
     static displayTweet(id: number): void {
@@ -67,11 +65,11 @@ export class TweetService {
         const replies = tweet.replies.map(reply => `> @${reply.author.username}: ${reply.content}`).join('\n');
         const likesDisplay = this.formatLikes(tweet);
 
-        console.log(`@${tweet.author.username}: ${tweet.content}\n${likesDisplay}\n${replies}`);
+        console.log(`@${tweet.author.username}: ${tweet.content}\nLikes: ${likesDisplay}\nReplies:\n${replies}`);
     }
 
     static formatLikes(tweet: Tweet): string {
-        if (tweet.likes === 0) return "";
+        if (tweet.likes === 0) return "No likes";
         if (tweet.likes === 1) return `@${tweet.author.username} liked`;
         return `@${tweet.author.username} and ${tweet.likes - 1} others liked`;
     }
@@ -88,10 +86,10 @@ export class TweetService {
     static replyToTweet(id: number, author: User, content: string): void {
         const tweet = this.getTweetById(id);
         if (tweet) {
-            tweet.addReply(content);
+            const reply = new Tweet(author, content, TweetType.Reply);
+            tweet.addReply(reply);
         } else {
             console.log("Tweet not found.");
         }
     }
 }
-

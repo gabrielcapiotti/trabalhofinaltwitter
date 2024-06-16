@@ -1,6 +1,4 @@
-enum TweetType {
+export enum TweetType {
     Normal,
     Reply
 }
-
-export default TweetType;
